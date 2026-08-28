@@ -1,0 +1,139 @@
+/* KOIMEX – oferta SEO. Odwzorowanie Figmy 1:1, kanwa 1920x1080, bez RWD. */
+
+/* ---------- fonts ---------- */
+@font-face {
+  font-family: 'TT Hoves Pro';
+  src: local('TT Hoves Pro Regular'), local('TT Hoves Pro Trial Regular'),
+       url('../fonts/TTHovesPro-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: block;
+}
+@font-face {
+  font-family: 'TT Hoves Pro';
+  src: local('TT Hoves Pro Medium'), local('TT Hoves Pro Trial Medium'),
+       url('../fonts/TTHovesPro-Medium.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: block;
+}
+@font-face {
+  font-family: 'TT Hoves Pro';
+  src: local('TT Hoves Pro DemiBold'), local('TT Hoves Pro Trial DemiBold'),
+       url('../fonts/TTHovesPro-DemiBold.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: block;
+}
+@font-face {
+  font-family: 'TT Hoves Pro Expanded';
+  src: local('TT Hoves Pro Expanded Regular'), local('TT Hoves Pro Trl Expanded Regular'),
+       url('../fonts/TTHovesProExpanded-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: block;
+}
+@font-face {
+  font-family: 'TT Hoves Pro Expanded';
+  src: local('TT Hoves Pro Expanded Medium'), local('TT Hoves Pro Trl Expanded Medium'),
+       url('../fonts/TTHovesProExpanded-Medium.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: block;
+}
+
+/* ---------- tokens ---------- */
+:root {
+  --ink: #1d1d1b;
+  --muted: #7c7c7c;
+  --rule: #7c7c7c;
+  --rule-light: #d4d4d4;
+  --th: #e5e5e5;
+  --band: #f5f5f5;
+  --sans: 'TT Hoves Pro', 'Helvetica Neue', Arial, sans-serif;
+  --sans-exp: 'TT Hoves Pro Expanded', 'TT Hoves Pro', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ---------- reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: #0e0e0e;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+
+/* ---------- stage ---------- */
+#deck {
+  position: relative;
+  width: 1920px; height: 1080px;
+  flex: none;
+  transform-origin: center center;
+}
+body.no-fit { overflow: auto; display: block; }
+body.no-fit #deck { transform: none !important; margin: 0 auto; }
+
+.slide {
+  position: absolute; inset: 0;
+  width: 1920px; height: 1080px;
+  background: #fff;
+  overflow: hidden;
+  display: none;
+  color: var(--ink);
+  font-family: var(--sans);
+}
+.slide.is-active { display: block; }
+
+/* ---------- primitives ---------- */
+.a { position: absolute; }
+/* Figma rysuje kreskę 1px NAD współrzędną Y linii (stroke wyśrodkowany
+   na h=0), stąd margin-top:-1px – dzięki temu "top" jest 1:1 z Figmą. */
+.rule { position: absolute; height: 0; margin-top: -1px; border-top: 1px solid var(--rule); }
+.rule-l { position: absolute; height: 0; margin-top: -1px; border-top: 1px solid var(--rule-light); }
+.rule-e { position: absolute; height: 0; margin-top: -1px; border-top: 1px solid var(--th); }
+/* Część linii jest w Figmie obrócona o 180° – wtedy kreska ląduje POD
+   współrzędną Y, nie nad nią. Modyfikator .dn zdejmuje przesunięcie. */
+.rule.dn, .rule-l.dn, .rule-e.dn { margin-top: 0; }
+.band { position: absolute; background: var(--band); }
+.th { position: absolute; background: var(--th); }
+.nw { white-space: nowrap; }
+.right { text-align: right; }
+
+/* ---------- type scale (1:1 z Figmą) ---------- */
+.h1 {
+  font-family: var(--sans-exp); font-weight: 400;
+  font-size: 56px; line-height: 60px; letter-spacing: -1.12px;
+}
+.h2   { font-family: var(--sans);     font-weight: 400; font-size: 28px; line-height: 34px; }
+.body { font-family: var(--sans);     font-weight: 400; font-size: 18px; line-height: 24px; }
+.body-b { font-family: var(--sans);   font-weight: 600; font-size: 18px; line-height: 24px; }
+.tab  { font-family: var(--sans-exp); font-weight: 500; font-size: 13px; line-height: 15px;
+        letter-spacing: 1.3px; text-transform: uppercase; }
+.col-h { font-family: var(--sans);    font-weight: 600; font-size: 20px; line-height: 24px; }
+.note { font-family: var(--sans);     font-weight: 400; font-size: 14px; line-height: 18px; color: var(--muted); }
+.foot { font-family: var(--sans-exp); font-weight: 400; font-size: 16px; line-height: 22px; color: var(--muted); }
+.kx   { font-family: var(--sans);     font-weight: 500; font-size: 48px; line-height: 106px; }
+.muted { color: var(--muted); }
+.slide strong { font-weight: 600; }
+
+/* Figma: text-box-trim: trim-both / text-box-edge: cap alphabetic.
+   Współrzędne "top" z Figmy = górna krawędź wersalika, nie line-boxa. */
+.trim { text-box-trim: trim-both; text-box-edge: cap alphabetic; }
+
+/* Fallback dla silników bez text-box-trim (Firefox): ręczne przesunięcie
+   o halfLeading + (ascent - capHeight), metryki TT Hoves: asc 1.0, desc 0.26, cap 0.70 em. */
+@supports not (text-box-trim: trim-both) {
+  .trim.h2   { margin-top: -7.76px; }
+  .trim.body,
+  .trim.body-b { margin-top: -6.06px; }
+  .trim.col-h { margin-top: -5.4px; }
+  .trim.tab  { margin-top: -3.21px; }
+  .trim.note { margin-top: -4.38px; }
+  .trim.foot { margin-top: -5.72px; }
+  .trim.kx   { margin-top: -37.16px; }
+}
+
+/* ---------- logo ---------- */
+.logo-mark { position: absolute; display: block; }
+
+/* ---------- print / PDF (1920x1080 landscape) ---------- */
+@page { size: 1920px 1080px; margin: 0; }
+@media print {
+  body { background: #fff; display: block; overflow: visible; }
+  #deck { transform: none !important; width: 1920px; height: auto; }
+  .slide { position: relative; inset: auto; display: block; break-after: page; page-break-after: always; }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+}
